@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\media\img\" />
+    <Folder Include="wwwroot\media\NovaPasta\" />
+  </ItemGroup>
+
 </Project>

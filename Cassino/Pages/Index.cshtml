@@ -6,12 +6,15 @@
 
 <div class="container">
 
-    <h1>🎰 Cassino da tchurma!</h1>
-    <p id="saldo">💰 Saldo: R$20</p>
+    <h1>🎰 Cassino da tchuuuurma!</h1>
+    <p id="saldo">💰 Saldo: R$10</p>
     <canvas id="slotCanvas" width="300" height="150"></canvas>
     <br>
     <button id="spinButton">Girar 🎲</button>
-    <p id="mensagem"></p>
+    <p id="mensagem" style="color: black;position: absolute;left: 21%;top: 32%;z-index: 9;">
+        Sou eu caraio
+    </p>
+    <img src="/media/img/meu-Genio-one-official.png" style="position: fixed;left: 5%;top: 24%;" />
 
     <script>
         class SlotMachine {
@@ -32,11 +35,23 @@
                 if (this.balance < this.betAmount) return null;
 
                 this.balance -= this.betAmount;
-                let spinResult = [
-                    this.getRandomSymbol(),
-                    this.getRandomSymbol(),
-                    this.getRandomSymbol()
-                ];
+
+                let spinResult;
+                
+                if(this.balance == 2)
+                {
+                    spinResult = [
+                        this.symbols[0],
+                        this.symbols[0],
+                        this.symbols[0]
+                    ];
+                }else {
+                    spinResult = [
+                        this.getRandomSymbol(),
+                        this.getRandomSymbol(),
+                        this.getRandomSymbol()
+                    ];
+                }
 
                 let resultKey = spinResult.join("");
                 let prize = this.payouts[resultKey] || 0;
@@ -56,7 +71,7 @@
         const saldoDisplay = document.getElementById("saldo");
         const mensagemDisplay = document.getElementById("mensagem");
 
-        let game = new SlotMachine(20);
+        let game = new SlotMachine(10);
 
         function drawSlots(symbols) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -70,6 +85,9 @@
         }
 
         function spinSlots() {
+
+            mensagemDisplay.textContent = "ta com sorte?"
+
             let spinData = game.spin();
             if (!spinData) {
                 mensagemDisplay.textContent = "Saldo insuficiente! 💰";
@@ -93,6 +111,9 @@
                     clearInterval(animationInterval);
                     drawSlots(result);
                     mensagemDisplay.textContent = prize > 0 ? `🎉 Você ganhou R$${prize}!` : "😢 Nada dessa vez.";
+                    if(balance == 0){
+                        mensagemDisplay.textContent = "SE FUDEU kkkk";
+                    }
                     saldoDisplay.textContent = `💰 Saldo: R$${balance}`;
                     if (balance < game.betAmount) spinButton.disabled = true;
                 }
